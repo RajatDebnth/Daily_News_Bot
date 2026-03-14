@@ -1,0 +1,39 @@
+name: Daily News Dispatch
+
+on:
+  schedule:
+    # 01:30 UTC is 07:00 AM IST. 
+    # Note: GitHub Actions can be delayed by 5-20 mins during busy periods.
+    - cron: '30 2 * * *'
+  workflow_dispatch:      # Allows you to click "Run workflow" manually in GitHub Actions tab
+
+jobs:
+  run-scraper:
+    runs-on: ubuntu-latest
+    
+    # Optional but recommended: Limits what the GITHUB_TOKEN can do for better security
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip' # Speeds up future runs by caching libraries
+      
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run News Assistant
+        # These map your GitHub "Secrets" to the "os.getenv" variables in your Python code
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }} # CRITICAL: This was missing!
+        run: python main.py
