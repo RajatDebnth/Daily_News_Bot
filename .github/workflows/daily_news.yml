@@ -2,7 +2,7 @@ name: Daily News Dispatch
 
 on:
   schedule:
-    - cron: '30 2 * * *'  # 08:00 AM IST
+    - cron: '30 2 * * *'  # 08:00 AM IST (02:30 UTC)
   workflow_dispatch:
 
 jobs:
@@ -12,20 +12,21 @@ jobs:
       contents: read
 
     steps:
-      # Upgraded to v6 to solve the Node.js deprecation warning
       - name: Checkout Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4  # Using stable v4
 
-      # Upgraded to v6 to solve the Node.js deprecation warning
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-          cache: 'pip'
+          # We temporarily disable cache to force a fresh install of python-dotenv
+          # cache: 'pip' 
       
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
+          # Explicitly install python-dotenv first to prevent naming conflicts
+          pip install python-dotenv
           pip install -r requirements.txt
 
       - name: Run News Assistant
@@ -33,5 +34,6 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        # Added 'python -u' for unbuffered logs so we can see errors instantly
+          # This tells Python to include the current directory in its search path
+          PYTHONPATH: ${{ github.workspace }}
         run: python -u main.py
