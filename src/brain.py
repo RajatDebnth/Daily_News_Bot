@@ -1,31 +1,37 @@
 from google import genai
 import os
+from datetime import datetime
+import pytz
 
 def summarize_news(raw_news):
     client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
     model_id = "gemini-2.5-flash-lite" 
 
-    # Compact High-Density Prompt
+    # Get correct date for IST
+    ist = pytz.timezone('Asia/Kolkata')
+    now = datetime.now(ist)
+    current_date = now.strftime('%A, %B %d, %Y')
+    current_time = now.strftime('%I:%M %p')
+
     prompt = f"""
-    Role: Elite Tech Analyst for C-suite Executives.
-    Task: Synthesize news metadata into a high-signal Telegram briefing.
+    Role: Senior AI Architect.
+    Context: Deliver a high-signal briefing within Telegram's character limits.
     Data: {raw_news}
 
-    Guidelines:
-    - Merge duplicates; prioritize high-impact stories.
-    - Style: Professional, objective, technical (e.g., use 'latency', 'RAG', 'scalability').
-    - Format: Telegram Markdown (**Bold**, *Italic*).
-    - Limit: Max 3 items per category.
+    Rules:
+    - Date/Time: {current_date} at {current_time} IST.
+    - Format: Telegram Markdown. No raw URLs. 
+    - Links: Use strictly [Full Report ↗️](link).
+    - Content: Merge similar stories. Max 2 bullets per sub-category.
+    - Style: Concise, technical, and objective.
 
-    Structure:
-    📅 **[Current Date] | Daily Intel Brief**
-
-    **[CATEGORY NAME]**
+    Briefing Template:
+    📅 **{current_date}** | 🕒 **{current_time} IST**
+    ---
+    **[CATEGORY]**
     • **[Title]**
-      - 💡 *Impact:* [Technical 'So What?' in 1 sentence].
-      - 🔗 [Link]
-
-    Execute Briefing:
+      - 💡 *Impact:* [1 sentence technical insight]
+      - 🔗 [Full Report ↗️](link)
     """
 
     try:
