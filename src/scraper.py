@@ -3,29 +3,48 @@ import urllib.parse
 from datetime import datetime
 import pytz
 
-# All 11 subtopics split into two sets for rotation
+# TOPICS_EVEN = {
+#     "Core AI & Agents": [
+#         "Agentic AI & Multi-Agent Orchestration", 
+#         "NCLC AI App Builders & Platform Updates", 
+#         "Vector Databases & Scalable Backends"
+#     ],
+#     "Enterprise & Compliance": [
+#         "AI Regulatory Compliance & Data Privacy",
+#         "Citizen Development & Shadow IT Governance",
+#         "AI Monetization & SaaS Pricing Models"
+#     ]
+# }
+
+# TOPICS_ODD = {
+#     "Edge & Architecture": [
+#         "Small Language Models SLMs & Edge AI",
+#         "API & Function Calling Enhancements",
+#         "Generative AI Architecture"
+#     ],
+#     "Industry & UX": [
+#         "Vertical AI & Industry-Specific Micro-SaaS",
+#         "UI/UX for Generative Interfaces"
+#     ]
+# }
+
+# All subtopics split into two sets for rotation
+
 TOPICS_EVEN = {
-    "Core AI & Agents": [
-        "Agentic AI & Multi-Agent Orchestration", 
-        "NCLC AI App Builders & Platform Updates", 
-        "Vector Databases & Scalable Backends"
-    ],
-    "Enterprise & Compliance": [
-        "AI Regulatory Compliance & Data Privacy",
-        "Citizen Development & Shadow IT Governance",
-        "AI Monetization & SaaS Pricing Models"
+    "AI Capabilities": [
+        "Models: New LLMs, Reasoning, Multimodal & Small/Local Models",
+        "Agents: Tool Use, Planning, Memory & Multi-Agent Systems",
+        "RAG & Data: Retrieval, Databases, Long-Context & Knowledge Systems",
+        "Voice & Vision: Speech, Real-Time AI & Image/Video Understanding"
     ]
 }
 
 TOPICS_ODD = {
-    "Edge & Architecture": [
-        "Small Language Models SLMs & Edge AI",
-        "API & Function Calling Enhancements",
-        "Generative AI Architecture"
-    ],
-    "Industry & UX": [
-        "Vertical AI & Industry-Specific Micro-SaaS",
-        "UI/UX for Generative Interfaces"
+    "AI Engineering & Application": [
+        "Developer AI: Coding Agents, IDE Agents & Autonomous Development",
+        "Infrastructure: Inference, Deployment, Observability & Evaluation",
+        "Automation: AI Workflows, Integrations & Browser/Computer Use",
+        "AI Products: New Patterns That Solve Real Business Problems"
     ]
 }
 
